@@ -3,6 +3,7 @@ package service.binarytree.impl;
 import model.BinaryTree;
 import model.Node;
 import service.binarytree.BinaryTreePrintService;
+import service.binarytree.BinaryTreeRotationService;
 import service.binarytree.BinaryTreeService;
 import service.node.NodeService;
 
@@ -15,40 +16,19 @@ public class BinaryTreeServiceImpl implements BinaryTreeService {
 
     private final NodeService nodeService;
     private final BinaryTreePrintService binaryTreePrintService;
+    private final BinaryTreeRotationService binaryTreeRotationService;
 
-    public BinaryTreeServiceImpl(NodeService nodeService, BinaryTreePrintService binaryTreePrintService) {
+    public BinaryTreeServiceImpl(NodeService nodeService,
+                                 BinaryTreePrintService binaryTreePrintService,
+                                 BinaryTreeRotationService binaryTreeRotationService) {
         this.nodeService = nodeService;
         this.binaryTreePrintService = binaryTreePrintService;
+        this.binaryTreeRotationService = binaryTreeRotationService;
     }
 
     @Override
     public void insert(int value) {
-        Node newNode = new Node(value);
-
-        if (isEmpty()) {
-            binaryTree.setRoot(newNode);
-            return;
-        }
-
-        Node currentNode = binaryTree.getRoot();
-
-        while (true) {
-            if (newNode.getValue() < currentNode.getValue()) {
-                if (nodeService.containsLeftChild(currentNode)) {
-                    currentNode = currentNode.getLeftNode();
-                } else {
-                    currentNode.setLeftNode(newNode);
-                    break;
-                }
-            } else {
-                if (nodeService.containsRightChild(currentNode)) {
-                    currentNode = currentNode.getRightNode();
-                } else {
-                    currentNode.setRightNode(newNode);
-                    break;
-                }
-            }
-        }
+        binaryTree.setRoot(insert(binaryTree.getRoot(), value));
     }
 
     @Override
@@ -74,58 +54,10 @@ public class BinaryTreeServiceImpl implements BinaryTreeService {
 
     @Override
     public boolean remove(int value) {
-        Node currentNode = binaryTree.getRoot();
-        Node currentParentNode = null;
+        if (!search(value)) return false;
 
-        while (nonNull(currentNode)) {
-            if (currentNode.getValue() == value) {
-                break;
-            } else if (value < currentNode.getValue()) {
-                currentParentNode = currentNode;
-                currentNode = currentNode.getLeftNode();
-            } else {
-                currentParentNode = currentNode;
-                currentNode = currentNode.getRightNode();
-            }
-        }
-
-        if (nonNull(currentNode)) {
-            if (nodeService.containsRightChild(currentNode)) {
-                Node substituteNode = currentNode.getRightNode();
-                Node substituteParentNode = currentNode;
-
-                while (nonNull(substituteNode.getLeftNode())) {
-                    substituteParentNode = substituteNode;
-                    substituteNode = substituteNode.getLeftNode();
-                }
-
-                setSubstitute(currentNode, currentParentNode, substituteNode, substituteParentNode);
-            } else if (nodeService.containsLeftChild(currentNode)) {
-                Node substituteNode = currentNode.getLeftNode();
-                Node substituteParentNode = currentNode;
-
-                while (nonNull(substituteNode.getRightNode())) {
-                    substituteParentNode = substituteNode;
-                    substituteNode = substituteNode.getRightNode();
-                }
-
-                setSubstitute(currentNode, currentParentNode, substituteNode, substituteParentNode);
-            } else if (nodeService.notContainsChildren(currentNode)) {
-                if (nonNull(currentParentNode)) {
-                    if (currentNode.getValue() > currentParentNode.getValue()) {
-                        currentParentNode.setRightNode(null);
-                    } else {
-                        currentParentNode.setLeftNode(null);
-                    }
-                } else {
-                    binaryTree.setRoot(null);
-                }
-            }
-
-            return true;
-        }
-
-        return false;
+        binaryTree.setRoot(remove(binaryTree.getRoot(), value));
+        return true;
     }
 
     @Override
@@ -133,27 +65,97 @@ public class BinaryTreeServiceImpl implements BinaryTreeService {
         binaryTreePrintService.print(binaryTree);
     }
 
-    private boolean isEmpty() {
-        return isNull(binaryTree.getRoot());
+    private Node insert(Node node, int value) {
+        if (isNull(node)) {
+            return new Node(value);
+        }
+
+        if (value < node.getValue()) {
+            node.setLeftNode(insert(node.getLeftNode(), value));
+        } else if (value > node.getValue()) {
+            node.setRightNode(insert(node.getRightNode(), value));
+        } else {
+            return node;
+        }
+
+        nodeService.updateHeight(node);
+
+        int balance = nodeService.getBalance(node);
+
+        if (balance > 1 && value < node.getLeftNode().getValue()) {
+            return binaryTreeRotationService.rotateRight(node);
+        }
+
+        if (balance < -1 && value > node.getRightNode().getValue()) {
+            return binaryTreeRotationService.rotateLeft(node);
+        }
+
+        if (balance > 1 && value > node.getLeftNode().getValue()) {
+            node.setLeftNode(binaryTreeRotationService.rotateLeft(node.getLeftNode()));
+            return binaryTreeRotationService.rotateRight(node);
+        }
+
+        if (balance < -1 && value < node.getRightNode().getValue()) {
+            node.setRightNode(binaryTreeRotationService.rotateRight(node.getRightNode()));
+            return binaryTreeRotationService.rotateLeft(node);
+        }
+
+        return node;
     }
 
-    private void setSubstitute(Node currentNode, Node currentParentNode, Node substituteNode, Node substituteParentNode) {
-        if (nonNull(currentParentNode)) {
-            if (currentNode.getValue() < currentParentNode.getValue()) {
-                currentParentNode.setLeftNode(substituteNode);
-            } else {
-                currentParentNode.setRightNode(substituteNode);
-            }
-        } else {
-            binaryTree.setRoot(substituteNode);
+    private Node remove(Node node, int value) {
+        if (isNull(node)) {
+            return null;
         }
 
-        if (substituteNode.getValue() < substituteParentNode.getValue()) {
-            System.out.println("substitute " + substituteNode.getValue() + " is letter than sub parent node" + substituteParentNode.getValue());
-            substituteParentNode.setLeftNode(null);
+        if (value < node.getValue()) {
+            node.setLeftNode(remove(node.getLeftNode(), value));
+        } else if (value > node.getValue()) {
+            node.setRightNode(remove(node.getRightNode(), value));
         } else {
-            System.out.println("substitute " + substituteNode.getValue() + " is better than sub parent node" + substituteParentNode.getValue());
-            substituteParentNode.setRightNode(null);
+            if (nodeService.notContainsChildren(node)) {
+                return nonNull(node.getLeftNode()) ? node.getLeftNode() : node.getRightNode();
+            }
+
+            Node substitute = findMin(node.getRightNode());
+            node.setValue(substitute.getValue());
+            node.setRightNode(remove(node.getRightNode(), substitute.getValue()));
         }
+
+        nodeService.updateHeight(node);
+
+        int balance = nodeService.getBalance(node);
+
+        // LL
+        if (balance > 1 && nodeService.getBalance(node.getLeftNode()) >= 0) {
+            return binaryTreeRotationService.rotateRight(node);
+        }
+
+        // LR
+        if (balance > 1 && nodeService.getBalance(node.getLeftNode()) < 0) {
+            node.setLeftNode(binaryTreeRotationService.rotateLeft(node.getLeftNode()));
+            return binaryTreeRotationService.rotateRight(node);
+        }
+
+        // RR
+        if (balance < -1 && nodeService.getBalance(node.getRightNode()) <= 0) {
+            return binaryTreeRotationService.rotateLeft(node);
+        }
+
+        // LL
+        if (balance < -1 && nodeService.getBalance(node.getRightNode()) > 0) {
+            node.setRightNode(binaryTreeRotationService.rotateRight(node.getRightNode()));
+            return binaryTreeRotationService.rotateLeft(node);
+        }
+
+        return node;
+    }
+
+    private Node findMin(Node node) {
+        while (nonNull(node.getLeftNode())) {
+            node = node.getLeftNode();
+        }
+
+        return node;
     }
 }

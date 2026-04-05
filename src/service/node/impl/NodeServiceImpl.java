@@ -22,4 +22,19 @@ public class NodeServiceImpl implements NodeService {
     public boolean notContainsChildren(Node node) {
         return isNull(node.getLeftNode()) && isNull(node.getRightNode());
     }
+
+    @Override
+    public void updateHeight(Node node) {
+        node.setHeight(1 + Math.max(getHeight(node.getLeftNode()), getHeight(node.getRightNode())));
+    }
+
+    @Override
+    public int getHeight(Node node) {
+        return isNull(node) ? 0 : node.getHeight();
+    }
+
+    @Override
+    public int getBalance(Node node) {
+        return isNull(node) ? 0 : getHeight(node.getLeftNode()) - getHeight(node.getRightNode());
+    }
 }

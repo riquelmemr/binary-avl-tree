@@ -1,12 +1,10 @@
 package model;
 
-import static java.util.Objects.isNull;
-import static java.util.Objects.nonNull;
-
 public class Node {
 
     private Node leftNode;
     private Node rightNode;
+    private int height;
     private int value;
 
     public Node(int value) {
@@ -37,4 +35,11 @@ public class Node {
         this.value = value;
     }
 
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
 }

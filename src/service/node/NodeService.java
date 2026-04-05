@@ -10,4 +10,10 @@ public interface NodeService {
 
     boolean notContainsChildren(Node node);
 
+    void updateHeight(Node node);
+
+    int getHeight(Node node);
+
+    int getBalance(Node node);
+
 }

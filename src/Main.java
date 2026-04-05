@@ -3,9 +3,11 @@ import exception.InvalidCommandException;
 import exception.InvalidNumberException;
 import service.binarytree.BinaryTreeCommandService;
 import service.binarytree.BinaryTreePrintService;
+import service.binarytree.BinaryTreeRotationService;
 import service.binarytree.BinaryTreeService;
 import service.binarytree.impl.BinaryTreeCommandServiceImpl;
 import service.binarytree.impl.BinaryTreePrintServiceImpl;
+import service.binarytree.impl.BinaryTreeRotationServiceImpl;
 import service.binarytree.impl.BinaryTreeServiceImpl;
 import service.node.NodeService;
 import service.node.impl.NodeServiceImpl;
@@ -27,7 +29,8 @@ public class Main {
 
         NodeService nodeService = new NodeServiceImpl();
         BinaryTreePrintService binaryTreePrintService = new BinaryTreePrintServiceImpl();
-        BinaryTreeService binaryTreeService = new BinaryTreeServiceImpl(nodeService, binaryTreePrintService);
+        BinaryTreeRotationService binaryTreeRotationService = new BinaryTreeRotationServiceImpl(nodeService);
+        BinaryTreeService binaryTreeService = new BinaryTreeServiceImpl(nodeService, binaryTreePrintService, binaryTreeRotationService);
         BinaryTreeCommandService binaryTreeCommandService = new BinaryTreeCommandServiceImpl(binaryTreeService);
 
         while (true) {
