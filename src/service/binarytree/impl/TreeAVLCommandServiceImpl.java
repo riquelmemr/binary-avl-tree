@@ -3,35 +3,35 @@ package service.binarytree.impl;
 import data.CommandData;
 import exception.InvalidCommandException;
 import exception.InvalidNumberException;
-import service.binarytree.BinaryTreeCommandService;
-import service.binarytree.BinaryTreeService;
+import service.binarytree.TreeAVLCommandService;
+import service.binarytree.TreeAVLService;
 
-public class BinaryTreeCommandServiceImpl implements BinaryTreeCommandService {
+public class TreeAVLCommandServiceImpl implements TreeAVLCommandService {
 
-    private final BinaryTreeService binaryTreeService;
+    private final TreeAVLService treeAVLService;
 
-    public BinaryTreeCommandServiceImpl(BinaryTreeService binaryTreeService) {
-        this.binaryTreeService = binaryTreeService;
+    public TreeAVLCommandServiceImpl(TreeAVLService treeAVLService) {
+        this.treeAVLService = treeAVLService;
     }
 
     @Override
     public void executeCommand(CommandData commandData) {
         switch (commandData.getCommand()) {
             case "search":
-                boolean found = binaryTreeService.search(commandData.getValue());
+                boolean found = treeAVLService.search(commandData.getValue());
                 System.out.println(found ? "Valor encontrado!" : "Valor não encontrado.");
                 return;
 
             case "insert":
-                binaryTreeService.insert(commandData.getValue());
+                treeAVLService.insert(commandData.getValue());
                 System.out.println("Valor inserido com sucesso!");
-                binaryTreeService.print();
+                treeAVLService.print();
                 return;
 
             case "remove":
-                boolean removed = binaryTreeService.remove(commandData.getValue());
+                boolean removed = treeAVLService.remove(commandData.getValue());
                 System.out.println(removed ? "Valor removido!" : "Valor não encontrado");
-                binaryTreeService.print();
+                treeAVLService.print();
                 return;
 
             default:

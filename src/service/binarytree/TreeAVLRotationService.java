@@ -2,7 +2,7 @@ package service.binarytree;
 
 import model.Node;
 
-public interface BinaryTreeRotationService {
+public interface TreeAVLRotationService {
 
     Node rotateLeft(Node node);
 

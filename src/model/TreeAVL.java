@@ -1,6 +1,6 @@
 package model;
 
-public class BinaryTree {
+public class TreeAVL {
 
     private Node root;
 

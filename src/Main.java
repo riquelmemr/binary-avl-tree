@@ -1,14 +1,14 @@
 import data.CommandData;
 import exception.InvalidCommandException;
 import exception.InvalidNumberException;
-import service.binarytree.BinaryTreeCommandService;
-import service.binarytree.BinaryTreePrintService;
-import service.binarytree.BinaryTreeRotationService;
-import service.binarytree.BinaryTreeService;
-import service.binarytree.impl.BinaryTreeCommandServiceImpl;
-import service.binarytree.impl.BinaryTreePrintServiceImpl;
-import service.binarytree.impl.BinaryTreeRotationServiceImpl;
-import service.binarytree.impl.BinaryTreeServiceImpl;
+import service.binarytree.TreeAVLCommandService;
+import service.binarytree.TreeAVLPrintService;
+import service.binarytree.TreeAVLRotationService;
+import service.binarytree.TreeAVLService;
+import service.binarytree.impl.TreeAVLCommandServiceImpl;
+import service.binarytree.impl.TreeAVLPrintServiceImpl;
+import service.binarytree.impl.TreeAVLRotationServiceImpl;
+import service.binarytree.impl.TreeAVLServiceImpl;
 import service.node.NodeService;
 import service.node.impl.NodeServiceImpl;
 import utils.Keyboard;
@@ -28,18 +28,18 @@ public class Main {
         System.out.println("4. stop");
 
         NodeService nodeService = new NodeServiceImpl();
-        BinaryTreePrintService binaryTreePrintService = new BinaryTreePrintServiceImpl();
-        BinaryTreeRotationService binaryTreeRotationService = new BinaryTreeRotationServiceImpl(nodeService);
-        BinaryTreeService binaryTreeService = new BinaryTreeServiceImpl(nodeService, binaryTreePrintService, binaryTreeRotationService);
-        BinaryTreeCommandService binaryTreeCommandService = new BinaryTreeCommandServiceImpl(binaryTreeService);
+        TreeAVLPrintService treePrintService = new TreeAVLPrintServiceImpl();
+        TreeAVLRotationService treeRotationService = new TreeAVLRotationServiceImpl(nodeService);
+        TreeAVLService treeService = new TreeAVLServiceImpl(nodeService, treePrintService, treeRotationService);
+        TreeAVLCommandService treeCommandService = new TreeAVLCommandServiceImpl(treeService);
 
         while (true) {
             String input = Keyboard.readString("\nDigite um comando:");
 
             if (notEquals(input, STOP_WORLD)) {
                 try {
-                    CommandData data = binaryTreeCommandService.splitCommand(input);
-                    binaryTreeCommandService.executeCommand(data);
+                    CommandData data = treeCommandService.splitCommand(input);
+                    treeCommandService.executeCommand(data);
                 } catch (InvalidCommandException ex) {
                     System.out.println("Comando inválido! Use o formato: comando valor");
                 } catch (InvalidNumberException ex) {

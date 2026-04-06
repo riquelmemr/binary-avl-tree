@@ -1,39 +1,39 @@
 package service.binarytree.impl;
 
-import model.BinaryTree;
+import model.TreeAVL;
 import model.Node;
-import service.binarytree.BinaryTreePrintService;
-import service.binarytree.BinaryTreeRotationService;
-import service.binarytree.BinaryTreeService;
+import service.binarytree.TreeAVLPrintService;
+import service.binarytree.TreeAVLRotationService;
+import service.binarytree.TreeAVLService;
 import service.node.NodeService;
 
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
-public class BinaryTreeServiceImpl implements BinaryTreeService {
+public class TreeAVLServiceImpl implements TreeAVLService {
 
-    private final BinaryTree binaryTree = new BinaryTree();
+    private final TreeAVL treeAVL = new TreeAVL();
 
     private final NodeService nodeService;
-    private final BinaryTreePrintService binaryTreePrintService;
-    private final BinaryTreeRotationService binaryTreeRotationService;
+    private final TreeAVLPrintService treeAVLPrintService;
+    private final TreeAVLRotationService treeAVLRotationService;
 
-    public BinaryTreeServiceImpl(NodeService nodeService,
-                                 BinaryTreePrintService binaryTreePrintService,
-                                 BinaryTreeRotationService binaryTreeRotationService) {
+    public TreeAVLServiceImpl(NodeService nodeService,
+                              TreeAVLPrintService treeAVLPrintService,
+                              TreeAVLRotationService treeAVLRotationService) {
         this.nodeService = nodeService;
-        this.binaryTreePrintService = binaryTreePrintService;
-        this.binaryTreeRotationService = binaryTreeRotationService;
+        this.treeAVLPrintService = treeAVLPrintService;
+        this.treeAVLRotationService = treeAVLRotationService;
     }
 
     @Override
     public void insert(int value) {
-        binaryTree.setRoot(insert(binaryTree.getRoot(), value));
+        treeAVL.setRoot(insert(treeAVL.getRoot(), value));
     }
 
     @Override
     public boolean search(int value) {
-        Node currentNode = binaryTree.getRoot();
+        Node currentNode = treeAVL.getRoot();
 
         while (nonNull(currentNode)) {
             if (currentNode.getValue() == value) {
@@ -56,13 +56,13 @@ public class BinaryTreeServiceImpl implements BinaryTreeService {
     public boolean remove(int value) {
         if (!search(value)) return false;
 
-        binaryTree.setRoot(remove(binaryTree.getRoot(), value));
+        treeAVL.setRoot(remove(treeAVL.getRoot(), value));
         return true;
     }
 
     @Override
     public void print() {
-        binaryTreePrintService.print(binaryTree);
+        treeAVLPrintService.print(treeAVL);
     }
 
     private Node insert(Node node, int value) {
@@ -83,21 +83,21 @@ public class BinaryTreeServiceImpl implements BinaryTreeService {
         int balance = nodeService.getBalance(node);
 
         if (balance > 1 && value < node.getLeftNode().getValue()) {
-            return binaryTreeRotationService.rotateRight(node);
+            return treeAVLRotationService.rotateRight(node);
         }
 
         if (balance < -1 && value > node.getRightNode().getValue()) {
-            return binaryTreeRotationService.rotateLeft(node);
+            return treeAVLRotationService.rotateLeft(node);
         }
 
         if (balance > 1 && value > node.getLeftNode().getValue()) {
-            node.setLeftNode(binaryTreeRotationService.rotateLeft(node.getLeftNode()));
-            return binaryTreeRotationService.rotateRight(node);
+            node.setLeftNode(treeAVLRotationService.rotateLeft(node.getLeftNode()));
+            return treeAVLRotationService.rotateRight(node);
         }
 
         if (balance < -1 && value < node.getRightNode().getValue()) {
-            node.setRightNode(binaryTreeRotationService.rotateRight(node.getRightNode()));
-            return binaryTreeRotationService.rotateLeft(node);
+            node.setRightNode(treeAVLRotationService.rotateRight(node.getRightNode()));
+            return treeAVLRotationService.rotateLeft(node);
         }
 
         return node;
@@ -128,24 +128,24 @@ public class BinaryTreeServiceImpl implements BinaryTreeService {
 
         // LL
         if (balance > 1 && nodeService.getBalance(node.getLeftNode()) >= 0) {
-            return binaryTreeRotationService.rotateRight(node);
+            return treeAVLRotationService.rotateRight(node);
         }
 
         // LR
         if (balance > 1 && nodeService.getBalance(node.getLeftNode()) < 0) {
-            node.setLeftNode(binaryTreeRotationService.rotateLeft(node.getLeftNode()));
-            return binaryTreeRotationService.rotateRight(node);
+            node.setLeftNode(treeAVLRotationService.rotateLeft(node.getLeftNode()));
+            return treeAVLRotationService.rotateRight(node);
         }
 
         // RR
         if (balance < -1 && nodeService.getBalance(node.getRightNode()) <= 0) {
-            return binaryTreeRotationService.rotateLeft(node);
+            return treeAVLRotationService.rotateLeft(node);
         }
 
         // LL
         if (balance < -1 && nodeService.getBalance(node.getRightNode()) > 0) {
-            node.setRightNode(binaryTreeRotationService.rotateRight(node.getRightNode()));
-            return binaryTreeRotationService.rotateLeft(node);
+            node.setRightNode(treeAVLRotationService.rotateRight(node.getRightNode()));
+            return treeAVLRotationService.rotateLeft(node);
         }
 
         return node;

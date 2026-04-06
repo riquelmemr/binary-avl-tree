@@ -2,7 +2,7 @@ package service.binarytree;
 
 import data.CommandData;
 
-public interface BinaryTreeCommandService {
+public interface TreeAVLCommandService {
 
     void executeCommand(CommandData commandData);
 

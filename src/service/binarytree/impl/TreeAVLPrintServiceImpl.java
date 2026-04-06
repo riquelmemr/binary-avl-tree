@@ -1,22 +1,22 @@
 package service.binarytree.impl;
 
-import model.BinaryTree;
+import model.TreeAVL;
 import model.Node;
-import service.binarytree.BinaryTreePrintService;
+import service.binarytree.TreeAVLPrintService;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Objects.nonNull;
 
-public class BinaryTreePrintServiceImpl implements BinaryTreePrintService {
+public class TreeAVLPrintServiceImpl implements TreeAVLPrintService {
 
     private static final String IN_ORDER = "Em-ordem: ";
     private static final String PRE_ORDER = "Pré-ordem: ";
     private static final String POS_ORDER = "Pós-ordem: ";
 
     @Override
-    public void print(BinaryTree binaryTree) {
+    public void print(TreeAVL binaryTree) {
         inOrder(binaryTree.getRoot());
         preOrder(binaryTree.getRoot());
         posOrder(binaryTree.getRoot());

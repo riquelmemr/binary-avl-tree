@@ -1,14 +1,14 @@
 package service.binarytree.impl;
 
 import model.Node;
-import service.binarytree.BinaryTreeRotationService;
+import service.binarytree.TreeAVLRotationService;
 import service.node.NodeService;
 
-public class BinaryTreeRotationServiceImpl implements BinaryTreeRotationService {
+public class TreeAVLRotationServiceImpl implements TreeAVLRotationService {
 
     private final NodeService nodeService;
 
-    public BinaryTreeRotationServiceImpl(NodeService nodeService) {
+    public TreeAVLRotationServiceImpl(NodeService nodeService) {
         this.nodeService = nodeService;
     }
 

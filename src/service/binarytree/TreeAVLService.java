@@ -1,6 +1,6 @@
 package service.binarytree;
 
-public interface BinaryTreeService {
+public interface TreeAVLService {
 
     void insert(int value);
 
