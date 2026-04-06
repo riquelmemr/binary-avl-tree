@@ -6,7 +6,5 @@ public class InvalidCommandException extends RuntimeException {
         super(message);
     }
 
-    public InvalidCommandException() {
-    }
-
+    public InvalidCommandException() {}
 }
