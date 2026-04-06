@@ -19,6 +19,7 @@ public class Main {
 
     private static final String STOP_WORLD = "stop";
 
+    // Riquelme Maia Rodrigues e Guilherme Anacleto
     public static void main(String[] args) {
         System.out.println("Construa sua árvore agora! Utilize os comandos abaixo para interagir com ela:\n");
 

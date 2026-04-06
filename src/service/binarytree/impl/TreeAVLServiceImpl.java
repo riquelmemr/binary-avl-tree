@@ -83,19 +83,27 @@ public class TreeAVLServiceImpl implements TreeAVLService {
         int balance = nodeService.getBalance(node);
 
         if (balance > 1 && value < node.getLeftNode().getValue()) {
+            System.out.println("Chave " + node.getValue() + " está desbalanceada. Vamos iniciar o balanceamento...");
+            System.out.println("Rotação simples à direita realizada!");
             return treeAVLRotationService.rotateRight(node);
         }
 
         if (balance < -1 && value > node.getRightNode().getValue()) {
+            System.out.println("Chave " + node.getValue() + " está desbalanceada. Vamos iniciar o balanceamento...");
+            System.out.println("Rotação simples à esquerda realizada!");
             return treeAVLRotationService.rotateLeft(node);
         }
 
         if (balance > 1 && value > node.getLeftNode().getValue()) {
+            System.out.println("Chave " + node.getValue() + " está desbalanceada. Vamos iniciar o balanceamento...");
+            System.out.println("Rotação dupla à direita realizada!");
             node.setLeftNode(treeAVLRotationService.rotateLeft(node.getLeftNode()));
             return treeAVLRotationService.rotateRight(node);
         }
 
         if (balance < -1 && value < node.getRightNode().getValue()) {
+            System.out.println("Chave " + node.getValue() + " está desbalanceada. Vamos iniciar o balanceamento...");
+            System.out.println("Rotação dupla à esquerda realizada!");
             node.setRightNode(treeAVLRotationService.rotateRight(node.getRightNode()));
             return treeAVLRotationService.rotateLeft(node);
         }
@@ -126,24 +134,28 @@ public class TreeAVLServiceImpl implements TreeAVLService {
 
         int balance = nodeService.getBalance(node);
 
-        // LL
         if (balance > 1 && nodeService.getBalance(node.getLeftNode()) >= 0) {
+            System.out.println("Chave " + node.getValue() + " está desbalanceada. Vamos iniciar o balanceamento...");
+            System.out.println("Rotação simples à direita realizada!");
             return treeAVLRotationService.rotateRight(node);
         }
 
-        // LR
         if (balance > 1 && nodeService.getBalance(node.getLeftNode()) < 0) {
+            System.out.println("Chave " + node.getValue() + " está desbalanceada. Vamos iniciar o balanceamento...");
+            System.out.println("Rotação dupla à direita realizada!");
             node.setLeftNode(treeAVLRotationService.rotateLeft(node.getLeftNode()));
             return treeAVLRotationService.rotateRight(node);
         }
 
-        // RR
         if (balance < -1 && nodeService.getBalance(node.getRightNode()) <= 0) {
+            System.out.println("Chave " + node.getValue() + " está desbalanceada. Vamos iniciar o balanceamento...");
+            System.out.println("Rotação simples à esquerda realizada!");
             return treeAVLRotationService.rotateLeft(node);
         }
 
-        // LL
         if (balance < -1 && nodeService.getBalance(node.getRightNode()) > 0) {
+            System.out.println("Chave " + node.getValue() + " está desbalanceada. Vamos iniciar o balanceamento...");
+            System.out.println("Rotação dupla à esquerda realizada!");
             node.setRightNode(treeAVLRotationService.rotateRight(node.getRightNode()));
             return treeAVLRotationService.rotateLeft(node);
         }

@@ -35,6 +35,11 @@ public class NodeServiceImpl implements NodeService {
 
     @Override
     public int getBalance(Node node) {
-        return isNull(node) ? 0 : getHeight(node.getLeftNode()) - getHeight(node.getRightNode());
+        if (isNull(node)) {
+            return 0;
+        }
+
+        node.setBalancingFactor(getHeight(node.getLeftNode()) - getHeight(node.getRightNode()));
+        return node.getBalancingFactor();
     }
 }

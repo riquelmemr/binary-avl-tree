@@ -5,10 +5,12 @@ public class Node {
     private Node leftNode;
     private Node rightNode;
     private int height;
+    private int balancingFactor;
     private int value;
 
     public Node(int value) {
         this.value = value;
+        this.height = 1;
     }
 
     public Node getLeftNode() {
@@ -41,5 +43,13 @@ public class Node {
 
     public void setHeight(int height) {
         this.height = height;
+    }
+
+    public int getBalancingFactor() {
+        return balancingFactor;
+    }
+
+    public void setBalancingFactor(int balancingFactor) {
+        this.balancingFactor = balancingFactor;
     }
 }
